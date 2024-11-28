@@ -1,12 +1,22 @@
 ---
- - hosts: all
-   become: true
-   tasks:
  
-   - name: install Apache2 and PHP packages
-     apt:
-       name: 
-         - apache2
-         - libapache2-mod-php
-       update_cache: yes
-       state: latest
+- hosts: all
+  become: true
+  tasks:
+  - name: install Apache2 and PHP packages on Ubuntu
+    apt:
+      name: 
+        - apache2
+        - libapache2-mod-php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "Ubuntu"
+ 
+  - name: install httpd and PHP packages on ALmaLinux
+    dnf:
+      name: 
+        - httpd
+        - php
+      state: latest
+      update_cache: yes
+    when: ansible_distribution == "AlmaLinux"
